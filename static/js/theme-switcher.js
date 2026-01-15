@@ -12,6 +12,10 @@ class ThemeSwitcher {
       "gruvbox-dark": "🍂 Gruvbox",
       "oled-abyss": "🌑 OLED Abyss",
       "solar-flare": "☀️ Solar Flare",
+      "catppuccin-latte": "🙀 Catppuccin Latte",
+      "catppuccin-frappe": "😸 Catppuccin Frappé",
+      "catppuccin-macchiato": "😻 Catppuccin Macchiato",
+      "catppuccin-mocha": "😼 Catppuccin Mocha",
     };
 
     this.currentTheme = this.getStoredTheme();
@@ -27,7 +31,7 @@ class ThemeSwitcher {
     }
 
     // Fallback if no system preference detected
-    return document.documentElement.getAttribute("data-theme");
+    return document.body.getAttribute("data-theme");
   }
 
   init() {
@@ -38,7 +42,7 @@ class ThemeSwitcher {
   applyTheme(themeName) {
     if (!this.themes[themeName]) return;
 
-    document.documentElement.setAttribute("data-theme", themeName);
+    document.body.setAttribute("data-theme", themeName);
     localStorage.setItem("theme", themeName);
     this.currentTheme = themeName;
     this.originalTheme = themeName; // Track the "real" theme
@@ -56,23 +60,23 @@ class ThemeSwitcher {
     }
 
     // Apply preview theme (but don't save to localStorage)
-    document.documentElement.setAttribute("data-theme", themeName);
+    document.body.setAttribute("data-theme", themeName);
     this.updateMetaThemeColor();
   }
 
   restoreTheme() {
     if (
       this.originalTheme &&
-      this.originalTheme !== document.documentElement.getAttribute("data-theme")
+      this.originalTheme !== document.body.getAttribute("data-theme")
     ) {
-      document.documentElement.setAttribute("data-theme", this.originalTheme);
+      document.body.setAttribute("data-theme", this.originalTheme);
       this.updateMetaThemeColor();
     }
   }
 
   updateMetaThemeColor() {
     const metaTheme = document.querySelector('meta[name="theme-color"]');
-    const themeColor = window.getComputedStyle(document.documentElement).getPropertyValue('--background-color');
+    const themeColor = window.getComputedStyle(document.body).getPropertyValue('--background-color');
     if (metaTheme && themeColor) {
       metaTheme.setAttribute("content", themeColor);
     }
